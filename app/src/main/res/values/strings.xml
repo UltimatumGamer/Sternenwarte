@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Sternenwarte</string>
+    <string name="days">Days</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
+    <string name="second">Second</string>
+    <string name="eigene_anzahl">Wähle eine eigene Anzahl [Minuten]</string>
+    <string name="_3_minuten">3 Minuten</string>
+    <string name="_2_minuten">2 Minuten</string>
+    <string name="_1_minute">1 Minute</string>
+    <string name="w_hle_eine_vordefinierte_anzahl">Wähle eine vordefinierte Anzahl</string>
+    <string name="zeit_abgelaufen">Zeit abgelaufen</string>
+    <string name="ausw_hlen">Auswählen</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="telescope_image">Telescope Image</string>
+</resources>
