@@ -5,12 +5,23 @@
     android:layout_height="match_parent"
     android:background="#2C2C2C"
     android:orientation="vertical"
-    android:paddingStart="10dp"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"
-    android:paddingEnd="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_ored"
+        android:elevation="4dp"
+        android:theme="@style/Theme.Sternenwarte"
+        android:title="@string/sternenwarte"
+        android:titleTextColor="@color/white"
+        app:popupTheme="@style/Theme.Sternenwarte"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,11 +77,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:autofillHints="1,2,3"
                 android:backgroundTint="@color/white"
                 android:ems="10"
                 android:inputType="time"
-                android:textColor="@color/white"
-                android:autofillHints="1,2,3" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/buttonMinuteCustom"
@@ -119,7 +130,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="122dp"
             android:contentDescription="@string/telescope_image"
             android:padding="10dp"
             android:paddingStart="10dp"
@@ -137,8 +148,8 @@
         android:id="@+id/linear_layout_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -248,8 +259,6 @@
                 android:textStyle="normal" />
 
         </LinearLayout>
-
-
 
 
     </LinearLayout>

@@ -14,4 +14,5 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="telescope_image">Telescope Image</string>
+    <string name="sternenwarte">Sternenwarte</string>
 </resources>

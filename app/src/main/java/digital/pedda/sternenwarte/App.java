@@ -1,6 +1,7 @@
 package digital.pedda.sternenwarte;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,13 +43,20 @@ public class App extends AppCompatActivity {
                 selectedMinutes = 3;
                 break;
             case "buttonMinuteCustom":
-                selectedMinutes = Integer.parseInt(String.valueOf(inputMinuteCustom.getText()));
+                String text = String.valueOf(inputMinuteCustom.getText());
+                if(text.length() < 1) {
+                    selectedMinutes = 0;
+                } else {
+                    selectedMinutes = Integer.parseInt(text);
+                }
                 break;
             case "startButton":
                 Calendar currentTimeNow = Calendar.getInstance();
                 currentTimeNow.add(Calendar.MINUTE, selectedMinutes);
                 Date futureTime = currentTimeNow.getTime();
                 countdownService.startCountdown(futureTime);
+                AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
                 break;
             case "stopButton":
                 linear_layout_1.setVisibility(View.VISIBLE);
@@ -64,6 +73,8 @@ public class App extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
         initUI();
 
     }
