@@ -15,8 +15,8 @@ public class ActionReceiver extends BroadcastReceiver {
                 App.getCountdownService().stopCountdown();
 
         }
-        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        context.sendBroadcast(it);
+        //Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        //context.sendBroadcast(it);
     }
 
 
