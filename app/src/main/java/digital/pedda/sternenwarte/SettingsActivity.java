@@ -34,7 +34,10 @@ public class SettingsActivity extends AppCompatActivity {
         volume.setProgress(userSettings.getVolume());
 
         vibrate.setOnCheckedChangeListener((buttonView, isChecked) -> userSettings.setVibrate(isChecked));
-        setVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {userSettings.setSetVolume(isChecked);volume.setEnabled(isChecked);});
+        setVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            userSettings.setSetVolume(isChecked);
+            volume.setEnabled(isChecked);
+        });
         countdownInMessages.setOnCheckedChangeListener((buttonView, isChecked) -> userSettings.setCountdownInMessages(isChecked));
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 

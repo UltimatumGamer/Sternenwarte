@@ -5,57 +5,48 @@ import android.content.SharedPreferences;
 
 public class UserSettings {
     private final SharedPreferences.Editor editor;
-    private boolean vibrate;
-    private boolean setVolume;
-    private int volume;
-    private boolean countdownInMessages;
+    private final SharedPreferences settings;
+
 
     @SuppressLint("CommitPrefEdits")
     public UserSettings(SharedPreferences settings) {
-        editor = settings.edit();
-        vibrate = settings.getBoolean("vibrate", true);
-        setVolume = settings.getBoolean("setVolume", true);
-        volume = settings.getInt("volume", 10);
-        countdownInMessages = settings.getBoolean("countdownInMessages", true);
+        this.settings = settings;
+        this.editor = settings.edit();
     }
 
     public boolean isSetVolume() {
-        return setVolume;
+        return settings.getBoolean("setVolume", true);
     }
 
     public void setSetVolume(boolean setVolume) {
         editor.putBoolean("setVolume", setVolume);
         editor.commit();
-        this.setVolume = setVolume;
     }
 
     public int getVolume() {
-        return volume;
+        return settings.getInt("volume", 10);
     }
 
     public void setVolume(int volume) {
         editor.putInt("volume", volume);
         editor.commit();
-        this.volume = volume;
     }
 
     public boolean isCountdownInMessages() {
-        return countdownInMessages;
+        return settings.getBoolean("countdownInMessages", true);
     }
 
     public void setCountdownInMessages(boolean countdownInMessages) {
         editor.putBoolean("countdownInMessages", countdownInMessages);
         editor.commit();
-        this.countdownInMessages = countdownInMessages;
     }
 
     public boolean isVibrate() {
-        return vibrate;
+        return settings.getBoolean("vibrate", true);
     }
 
     public void setVibrate(boolean vibrate) {
         editor.putBoolean("vibrate", vibrate);
         editor.commit();
-        this.vibrate = vibrate;
     }
 }

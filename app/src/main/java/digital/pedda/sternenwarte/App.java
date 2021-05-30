@@ -25,15 +25,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static digital.pedda.sternenwarte.Utils.createNotificationChannel;
+
 public class App extends AppCompatActivity {
 
-    CountdownService countdownService = new CountdownService();
+    static CountdownService countdownService = new CountdownService();
+    private static UserSettings userSettings;
     private LinearLayout linear_layout_1, linear_layout_2;
     private TextView tv_days, tv_hour, tv_minute, tv_second, timePreview;
     private EditText inputMinuteCustom;
     private int selectedMinutes;
     private Vibrator vibrator;
-    private UserSettings userSettings;
     View.OnClickListener onButtonClickListener = v -> {
         String button = Utils.getResourceName(v);
         switch (Objects.requireNonNull(button)) {
@@ -59,7 +61,7 @@ public class App extends AppCompatActivity {
                 currentTimeNow.add(Calendar.MINUTE, selectedMinutes);
                 Date futureTime = currentTimeNow.getTime();
                 countdownService.startCountdown(futureTime);
-                if(userSettings.isSetVolume()){
+                if (userSettings.isSetVolume()) {
                     AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                     audio.setStreamVolume(AudioManager.STREAM_MUSIC, userSettings.getVolume(), 0);
                 }
@@ -76,6 +78,14 @@ public class App extends AppCompatActivity {
     };
     private Button startButton, stopButton;
 
+    public static UserSettings getUserSettings() {
+        return userSettings;
+    }
+
+    public static CountdownService getCountdownService() {
+        return countdownService;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,9 +93,11 @@ public class App extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        initUI();
+        createNotificationChannel(this, "Sternenwarte", "Countdown gestartet", "countdown");
 
-        userSettings = getUserSettings();
+        userSettings = new UserSettings(getSharedPreferences("UserInfo", 0));
+
+        initUI();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -219,7 +231,6 @@ public class App extends AppCompatActivity {
         return stopButton;
     }
 
-
     public void startVibrator(VibrationEffect vibrationEffect) {
         vibrator.vibrate(vibrationEffect);
     }
@@ -228,10 +239,6 @@ public class App extends AppCompatActivity {
         if (vibrator != null) {
             vibrator.cancel();
         }
-    }
-
-    public UserSettings getUserSettings() {
-        return new UserSettings(getSharedPreferences("UserInfo", 0));
     }
 
 }

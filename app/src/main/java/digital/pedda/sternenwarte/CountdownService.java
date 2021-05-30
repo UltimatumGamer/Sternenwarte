@@ -1,7 +1,10 @@
 package digital.pedda.sternenwarte;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -12,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import java.util.Date;
 
@@ -36,7 +40,7 @@ public class CountdownService extends Service {
 
         this.app = app;
 
-        this.userSettings = app.getUserSettings();
+        this.userSettings = App.getUserSettings();
 
         this.tv_days = app.getTv_days();
         this.tv_hour = app.getTv_hour();
@@ -54,6 +58,28 @@ public class CountdownService extends Service {
 
 
     private void countDownStart(Date futureDate) {
+        NotificationCompat.Builder builder = null;
+        NotificationManager notificationManager = null;
+
+        if (App.getUserSettings().isCountdownInMessages()) {
+            Intent intentAction = new Intent(app.getBaseContext(), ActionReceiver.class);
+
+            intentAction.putExtra("action", "stopCountdown");
+
+            PendingIntent pIntentlogin = PendingIntent.getBroadcast(app.getBaseContext(), 1, intentAction, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            builder = new NotificationCompat.Builder(app, "countdown")
+                    .setSmallIcon(R.drawable.telescope)
+                    .setContentTitle("Countdown")
+                    .setContentText("START")
+                    .setOnlyAlertOnce(true)
+                    .addAction(R.drawable.telescope, "Stop", pIntentlogin) // #0
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager = (NotificationManager) app.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(1, builder.build());
+        }
+        NotificationCompat.Builder finalBuilder = builder;
+        NotificationManager finalNotificationManager = notificationManager;
         runnable = new Runnable() {
             @SuppressLint("DefaultLocale")
             @Override
@@ -75,6 +101,23 @@ public class CountdownService extends Service {
                         tv_hour.setText(String.format("%02d", Hours));
                         tv_minute.setText(String.format("%02d", Minutes));
                         tv_second.setText(String.format("%02d", Seconds));
+
+                        StringBuilder stringBuilder = new StringBuilder();
+                        if (Days > 0) {
+                            stringBuilder.append(Days).append(":").append(Hours).append(":");
+                        } else {
+                            if (Hours > 0) {
+                                stringBuilder.append(Hours).append(":");
+                            }
+                        }
+
+                        stringBuilder.append(Minutes).append(":").append(Seconds);
+
+                        if (App.getUserSettings().isCountdownInMessages()) {
+                            finalBuilder.setContentText(stringBuilder.toString());
+
+                            finalNotificationManager.notify(1, finalBuilder.build());
+                        }
 
                         if (Seconds == 30) {
                             if (userSettings.isVibrate()) {
