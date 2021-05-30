@@ -69,11 +69,11 @@ public class CountdownService extends Service {
             PendingIntent pIntentlogin = PendingIntent.getBroadcast(app.getBaseContext(), 1, intentAction, PendingIntent.FLAG_UPDATE_CURRENT);
 
             builder = new NotificationCompat.Builder(app, "countdown")
-                    .setSmallIcon(R.drawable.telescope)
+                    .setSmallIcon(R.drawable.ic_telescope)
                     .setContentTitle("Countdown")
                     .setContentText("START")
                     .setOnlyAlertOnce(true)
-                    .addAction(R.drawable.telescope, "Stop", pIntentlogin) // #0
+                    .addAction(R.drawable.ic_telescope, "Stop", pIntentlogin) // #0
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             notificationManager = (NotificationManager) app.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(1, builder.build());
@@ -138,8 +138,6 @@ public class CountdownService extends Service {
                         }
 
                     } else {
-                        linear_layout_1.setVisibility(View.VISIBLE);
-                        linear_layout_2.setVisibility(View.GONE);
                         stopCountdown();
                     }
                 } catch (Exception e) {
@@ -147,21 +145,23 @@ public class CountdownService extends Service {
                 }
             }
         };
-        startButton.setEnabled(true);
-        stopButton.setEnabled(false);
-        linear_layout_1.setVisibility(View.GONE);
-        linear_layout_2.setVisibility(View.VISIBLE);
         handler.postDelayed(runnable, 0);
     }
 
     public void stopCountdown() {
         handler.removeCallbacks(runnable);
+        linear_layout_1.setVisibility(View.VISIBLE);
+        linear_layout_2.setVisibility(View.GONE);
         startButton.setEnabled(true);
         stopButton.setEnabled(false);
     }
 
     public void startCountdown(Date futureDate) {
         countDownStart(futureDate);
+        linear_layout_1.setVisibility(View.GONE);
+        linear_layout_2.setVisibility(View.VISIBLE);
+        startButton.setEnabled(true);
+        stopButton.setEnabled(false);
     }
 
 
