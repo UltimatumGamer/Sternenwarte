@@ -60,7 +60,6 @@ public class App extends AppCompatActivity {
                 Date futureTime = currentTimeNow.getTime();
                 countdownService.startCountdown(futureTime);
                 if(userSettings.isSetVolume()){
-                    System.out.println("SET VOLUME");
                     AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                     audio.setStreamVolume(AudioManager.STREAM_MUSIC, userSettings.getVolume(), 0);
                 }

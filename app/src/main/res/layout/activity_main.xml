@@ -12,7 +12,9 @@
         android:background="@color/light_ored"
         android:elevation="4dp"
         android:theme="@style/Theme.Sternenwarte"
-        app:popupTheme="@style/Theme.Sternenwarte" />
+        app:popupTheme="@style/Theme.Sternenwarte"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/padding"
