@@ -22,8 +22,9 @@ public class CountdownService extends Service {
     private LinearLayout linear_layout_1, linear_layout_2;
     private App app;
 
-    private Button startButton, stopButton;
+    private UserSettings userSettings;
 
+    private Button startButton, stopButton;
 
 
     @Override
@@ -35,13 +36,15 @@ public class CountdownService extends Service {
 
         this.app = app;
 
+        this.userSettings = app.getUserSettings();
+
         this.tv_days = app.getTv_days();
         this.tv_hour = app.getTv_hour();
         this.tv_minute = app.getTv_minute();
         this.tv_second = app.getTv_second();
 
         this.startButton = app.getStartButton();
-        this.stopButton =app.getStopButton();
+        this.stopButton = app.getStopButton();
 
         this.linear_layout_1 = app.getLinear_layout_1();
         this.linear_layout_2 = app.getLinear_layout_2();
@@ -72,17 +75,21 @@ public class CountdownService extends Service {
                         tv_hour.setText(String.format("%02d", Hours));
                         tv_minute.setText(String.format("%02d", Minutes));
                         tv_second.setText(String.format("%02d", Seconds));
+
                         if (Seconds == 30) {
-                            final VibrationEffect vibrationEffect1;
+                            if (userSettings.isVibrate()) {
+                                final VibrationEffect vibrationEffect1;
 
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
-                                vibrationEffect1 = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
+                                    vibrationEffect1 = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
 
-                                app.stopVibrator();
-                                app.startVibrator(vibrationEffect1);
+                                    app.stopVibrator();
+                                    app.startVibrator(vibrationEffect1);
+                                }
                             }
                         }
+
                         if ((Days + Hours + Minutes) == 0) {
                             app.playCountdownAudio((int) Seconds);
                         }

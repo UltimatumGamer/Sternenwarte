@@ -1,11 +1,15 @@
 package digital.pedda.sternenwarte;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,13 +27,13 @@ import java.util.Objects;
 
 public class App extends AppCompatActivity {
 
-    private LinearLayout linear_layout_1,linear_layout_2;
+    CountdownService countdownService = new CountdownService();
+    private LinearLayout linear_layout_1, linear_layout_2;
     private TextView tv_days, tv_hour, tv_minute, tv_second, timePreview;
     private EditText inputMinuteCustom;
     private int selectedMinutes;
     private Vibrator vibrator;
-    private Button startButton, stopButton;
-    CountdownService countdownService = new CountdownService();
+    private UserSettings userSettings;
     View.OnClickListener onButtonClickListener = v -> {
         String button = Utils.getResourceName(v);
         switch (Objects.requireNonNull(button)) {
@@ -44,7 +48,7 @@ public class App extends AppCompatActivity {
                 break;
             case "buttonMinuteCustom":
                 String text = String.valueOf(inputMinuteCustom.getText());
-                if(text.length() < 1) {
+                if (text.length() < 1) {
                     selectedMinutes = 0;
                 } else {
                     selectedMinutes = Integer.parseInt(text);
@@ -55,8 +59,12 @@ public class App extends AppCompatActivity {
                 currentTimeNow.add(Calendar.MINUTE, selectedMinutes);
                 Date futureTime = currentTimeNow.getTime();
                 countdownService.startCountdown(futureTime);
-                AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                audio.setStreamVolume(AudioManager.STREAM_MUSIC, audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+                if(userSettings.isSetVolume()){
+                    System.out.println("SET VOLUME");
+                    AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                    audio.setStreamVolume(AudioManager.STREAM_MUSIC, userSettings.getVolume(), 0);
+                }
+
                 break;
             case "stopButton":
                 linear_layout_1.setVisibility(View.VISIBLE);
@@ -67,7 +75,7 @@ public class App extends AppCompatActivity {
         }
         timePreview.setText(String.valueOf(selectedMinutes));
     };
-
+    private Button startButton, stopButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +83,32 @@ public class App extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
         initUI();
 
+        userSettings = getUserSettings();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private void initUI() {
@@ -107,7 +139,8 @@ public class App extends AppCompatActivity {
 
         buttonList.forEach(button -> button.setOnClickListener(onButtonClickListener));
     }
-    public void playCountdownAudio(Integer count){
+
+    public void playCountdownAudio(Integer count) {
         switch (count) {
             case 10:
                 play(R.raw.zehn);
@@ -188,14 +221,18 @@ public class App extends AppCompatActivity {
     }
 
 
-
-    public void startVibrator(VibrationEffect vibrationEffect){
+    public void startVibrator(VibrationEffect vibrationEffect) {
         vibrator.vibrate(vibrationEffect);
     }
-    public void stopVibrator(){
-        if(vibrator != null){
+
+    public void stopVibrator() {
+        if (vibrator != null) {
             vibrator.cancel();
         }
+    }
+
+    public UserSettings getUserSettings() {
+        return new UserSettings(getSharedPreferences("UserInfo", 0));
     }
 
 }
