@@ -7,11 +7,12 @@
     android:orientation="vertical"
     app:layoutDescription="@xml/activity_settings_scene"
     tools:context=".SettingsActivity" >
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/light_ored"
+        android:background="?attr/colorPrimaryVariant"
         android:elevation="4dp"
         android:theme="@style/Theme.Sternenwarte"
         app:popupTheme="@style/Theme.Sternenwarte" />
@@ -58,8 +59,8 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:progress="3"
-            android:progressTint="@color/light_ored"
-            android:thumbTint="@color/light_ored" />
+            android:progressTint="?attr/colorPrimaryVariant"
+            android:thumbTint="?attr/colorPrimaryVariant" />
 
         <Switch
             android:id="@+id/switch3"
