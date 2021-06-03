@@ -10,10 +10,8 @@ public class ActionReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         String action = intent.getStringExtra("action");
-        switch (action) {
-            case "stopCountdown":
-                App.getCountdownService().stopCountdown();
-
+        if ("stopCountdown".equals(action)) {
+            App.getCountdownService().stopCountdown();
         }
         //Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         //context.sendBroadcast(it);

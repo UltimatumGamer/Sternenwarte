@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Objects;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -24,11 +26,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initUI() {
         UserSettings userSettings = new UserSettings(getSharedPreferences("UserInfo", 0));
-        Switch vibrate = findViewById(R.id.switch1);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch vibrate = findViewById(R.id.switch1);
         vibrate.setChecked(userSettings.isVibrate());
-        Switch setVolume = findViewById(R.id.switch2);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch setVolume = findViewById(R.id.switch2);
         setVolume.setChecked(userSettings.isSetVolume());
-        Switch countdownInMessages = findViewById(R.id.switch3);
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch countdownInMessages = findViewById(R.id.switch3);
         countdownInMessages.setChecked(userSettings.isCountdownInMessages());
         SeekBar volume = findViewById(R.id.seekBar);
         volume.setProgress(userSettings.getVolume());
@@ -72,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
         MenuBuilder menuBuilder = (MenuBuilder) toolbar.getMenu();
         menuBuilder.setOptionalIconsVisible(true);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
 

@@ -29,6 +29,7 @@ import static digital.pedda.sternenwarte.Utils.createNotificationChannel;
 
 public class App extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
     static CountdownService countdownService = new CountdownService();
     private static UserSettings userSettings;
     private LinearLayout linear_layout_1, linear_layout_2;
@@ -108,18 +109,12 @@ public class App extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initUI() {
